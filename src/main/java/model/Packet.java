@@ -51,7 +51,6 @@ public class Packet {
         this.targetSpeed = currentSpeed;
     }
 
-    // Getters and Setters
 
     public String getId() {
         return id;
@@ -99,14 +98,14 @@ public class Packet {
     }
 
     public void updateMovement(double deltaTime) {
-        // محاسبه حرکت شتاب‌دار
+
         currentSpeed += (targetSpeed - currentSpeed) * 0.1;
 
-        // نرمال‌سازی بردار سرعت
+
         Vector2D normalizedVelocity = velocity.normalize();
         velocity = normalizedVelocity.multiply(currentSpeed);
 
-        // آپدیت کردن موقعیت
+
         Vector2D deltaMove = velocity.multiply(deltaTime);
         position = position.add(deltaMove);
     }

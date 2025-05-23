@@ -1,5 +1,6 @@
 package view;
 
+import model.Port;
 import model.Wire;
 import util.Constants;
 import util.Vector2D;
@@ -16,11 +17,26 @@ public class WireView {
         this.color = Color.BLUE;
     }
 
-    public void draw(Graphics2D g) {
-        Point2D from = wire.getFromPort().getPosition().toPoint2D();
-        Point2D to = wire.getToPort().getPosition().toPoint2D();
-        WireCurveUtil.drawWire(g, from, to, color);
-    }
+//    public void draw(Graphics2D g) {
+//        Point2D.Double from = wire.getFromPort().getPosition().toPoint2D();
+//        Point2D to = wire.getToPort().getPosition().toPoint2D();
+//        WireCurveUtil.drawWire(g, from, to, color);
+//    }
+public void draw(Graphics2D g, GameStageView stage) {
+    Port fromPort = wire.getFromPort();
+    Port toPort = wire.getToPort();
+
+    PortView fromView = stage.findPortView(fromPort);
+    PortView toView = stage.findPortView(toPort);
+
+    if (fromView == null || toView == null) return;
+
+    Point from = fromView.getCenterPoint();
+    Point to = toView.getCenterPoint();
+
+    WireCurveUtil.drawWire(g, from, to, color);
+}
+
 
     public boolean isNear(Point p) {
         Vector2D a = wire.getFromPort().getPosition();

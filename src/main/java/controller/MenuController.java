@@ -34,7 +34,7 @@ public class MenuController {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("Levels Clicked!");
-                    // TODO: Show levels view
+                    // مرحله ها رو باید اینجا نشون بدم
                 }
             });
 
@@ -53,15 +53,7 @@ public class MenuController {
                      }
                  });
 
-
-
-
-
-
-
     }
-
-
 
 
 

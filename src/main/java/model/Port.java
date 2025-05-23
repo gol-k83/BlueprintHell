@@ -11,12 +11,12 @@ public class Port{
 //    public enum ShapeType{
 //        SQUARED,TRIANGLE
 //    }
-    private final String id;               // شناسه یکتا
-    private final PortType type;            // ورودی یا خروجی
-    private final ShapeType compatibleShape; // شکل پذیرش (مربع یا مثلث)
-    private boolean occupied;               // آیا در حال حاضر اشغال شده؟
-    private Vector2D position;              // موقعیت گرافیکی روی صفحه
-    private Wire connectedWire;             // سیم متصل به این پورت (nullable)
+    private final String id;
+    private final PortType type;
+    private final ShapeType compatibleShape;
+    private boolean occupied;
+    private Vector2D position;
+    private Wire connectedWire;
      private SystemNode parentNode;
 public Port(String id,PortType type,ShapeType compatibleShape,boolean occupied,Vector2D position,SystemNode parentNode){
 
@@ -64,7 +64,7 @@ public boolean isOccupied(){
         this.connectedWire = connectedWire;
     }
 
-    // آیا این پورت با یک پکت مشخص سازگار است؟
+    // سازگاری
     public boolean isCompatibleWith(model.ShapeType packetShape) {
         return this.compatibleShape == packetShape;
     }

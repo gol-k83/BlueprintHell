@@ -4,11 +4,11 @@ import model.Port;
 import model.Wire;
 import util.Constants;
 import util.Vector2D;
-import view.GameStageView;
-import view.PortView;
-import view.WirePreview;
+import view.*;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
+import java.awt.geom.QuadCurve2D;
 
 public class WireBuilder {
     private final WireManager wireManager;
@@ -17,6 +17,7 @@ public class WireBuilder {
     private Port fromPort = null;
     private WirePreview preview = null;
     private boolean active = false;
+    private Point startPointScreen;  // نقطه شروع در مختصات صفحه
 
     public WireBuilder(WireManager wireManager, GameStageView stage) {
         this.wireManager = wireManager;
@@ -35,16 +36,20 @@ public class WireBuilder {
         } else {
             if (port.getType() == Port.PortType.INPUT && isValidConnection(fromPort, port)) {
                 boolean success = wireManager.tryConnectPorts(fromPort, port);
-                if (success) {
-                    stage.addWire(new Wire(fromPort, port)); // اضافه به ویو
-                    System.out.println(" سیم متصل شد بین " + fromPort.getId() + " و " + port.getId());
+                Wire newWire = wireManager.connectAndReturn(fromPort, port);
+                if (newWire != null) {
+                    stage.addWire(newWire); // ؟؟WireView درست اضافه میشه
+                    System.out.println("✅ سیم متصل شد بین " + fromPort.getId() + " و " + port.getId());
                 } else {
-                    System.out.println(" اتصال نامعتبر بین پورت‌ها");
+                    System.out.println("اتصال نامعتبر یا محدودیت سیم");
                 }
+
             }
+
             cancel(); // همیشه بعد از تلاش برای اتصال
         }
     }
+
     public void onPortClick(PortView portView) {
         Port port = portView.getPort();
         if (!active) {
@@ -99,25 +104,59 @@ public class WireBuilder {
     }
 
     private boolean isValidConnection(Port from, Port to) {
-        // ۱. از یک سیستم به خودش نباشه
+        //  از یک سیستم به خودش نباشه
         if (from.getParentNode() == to.getParentNode()) return false;
 
-        // ۲. یکیش ورودی باشه یکی خروجی (چک شده در بالا)
-        // ۳. شکل‌ها سازگار باشن
         if (!to.isCompatibleWith(from.getCompatibleShape())) return false;
 
-        // ۴. قبلاً سیم نداشته باشن
+
         if (from.isOccupied() || to.isOccupied()) return false;
 
-        // ۵. فاصله سیم از موجودی بیشتر نباشه
+        // . فاصله سیم از موجودی بیشتر نباشه
         double distance = from.getPosition().distanceTo(to.getPosition());
         return distance <= Constants.TOTAL_AVAILABLE_WIRE_LENGTH;
     }
 
-    public void drawPreview(Graphics2D g) {
+    public void drawPreview(Graphics2D g, GameStageView stage) {
         if (preview != null) {
-            preview.draw(g);  // کلاس WirePreview باید این متد را داشته باشد
+            preview.draw(g, stage);
         }
     }
 
+    public void startDraggingFrom(Port from) {
+        this.fromPort = from;
+        this.preview = new WirePreview(from);
+        this.active = true;
+        PortView portView = stage.findPortView(from);
+        SystemNodeView nodeView = stage.findViewFor(from.getParentNode());
+        if (portView != null && nodeView != null) {
+            startPointScreen = portView.getScreenPosition(nodeView);
+        }
+    }
+
+    public void finishDraggingTo(Port toPort) {
+        if (fromPort != null && isValidConnection(fromPort, toPort)) {
+            Wire wire = wireManager.connectAndReturn(fromPort, toPort);
+            if (wire != null) {
+                // نقطه پایان موس هنگام رهاسازی
+                PortView toView = stage.findPortView(toPort);
+                SystemNodeView toNodeView = stage.findViewFor(toPort.getParentNode());
+
+                if (toView != null && toNodeView != null) {
+                    Point endPointScreen = toView.getScreenPosition(toNodeView);
+
+                    stage.addWire(wire);
+                }
+//لاگگ تست
+                System.out.println(" سیم متصل شد و رسم شد بین " + fromPort.getId() + " و " + toPort.getId());
+            } else {
+                System.out.println(" اتصال نامعتبر یا طول مجاز تمام شده");
+            }
+        }
+
+        cancel();
+    }
+
+
 }
+

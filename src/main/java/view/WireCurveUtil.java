@@ -9,7 +9,7 @@ public class WireCurveUtil {
         g.setColor(color);
         g.setStroke(new BasicStroke(2));
 
-        // خط صاف با QuadCurve (کنترل وسط)
+
         Point2D control = new Point2D.Double(
                 (from.getX() + to.getX()) / 2,
                 (from.getY() + to.getY()) / 2

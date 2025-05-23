@@ -13,6 +13,8 @@ public class WirePreview {
     private final Port fromPort;
     private boolean valid;
     private Color color;
+    private Point2D fromScreenPosition;
+
     public WirePreview(Port fromPort, Vector2D customStart) {
         this.fromPort = fromPort;
         this.currentMousePosition = customStart;
@@ -34,22 +36,53 @@ public class WirePreview {
 
     public void updateValidity(boolean isValid) {
         this.valid = isValid;
-        this.color = isValid ? Color.GREEN : Color.RED; // اگر اتصال معتبر بود، سبز؛ در غیر این صورت قرمز
+        this.color = isValid ? Color.GREEN : Color.RED;
     }
 
-    public void draw(Graphics2D g) {
-        Point2D from = fromPort.getPosition().toPoint2D();
-        Point2D to = currentMousePosition.toPoint2D();
+//    public void draw(Graphics2D g) {
+//        Point2D from = fromPort.getPosition().toPoint2D();
+//        Point2D to = currentMousePosition.toPoint2D();
+//
+//        Point2D control = new Point2D.Double(
+//                (from.getX() + to.getX()) / 2, (from.getY() + to.getY()) / 2);
+//        QuadCurve2D curve = new QuadCurve2D.Double();
+//        curve.setCurve(from, control, to);
+//        g.setColor(color);
+//        g.draw(curve);
+//        System.out.println(" رسم از: " + from.getY());
+//
+//
+//    }
+public void draw(Graphics2D g, GameStageView stage) {
 
-        Point2D control = new Point2D.Double(
-                (from.getX() + to.getX()) / 2, (from.getY() + to.getY()) / 2);
-        QuadCurve2D curve = new QuadCurve2D.Double();
-        curve.setCurve(from, control, to);
-        g.setColor(color);
-        g.draw(curve);
+    SystemNodeView fromNodeView = stage.findViewFor(fromPort.getParentNode());
+    PortView fromPortView = stage.findPortView(fromPort);
+
+    if (fromPortView == null || fromNodeView == null) return;
 
 
-    }
+    Point from = fromPortView.getScreenPosition(fromNodeView);
+
+
+    Point to = currentMousePosition.toPoint();
+
+
+    Point control = new Point(
+            (from.x + to.x) / 2,
+            (from.y + to.y) / 2
+    );
+
+
+    QuadCurve2D curve = new QuadCurve2D.Double();
+    curve.setCurve(from, control, to);
+
+    g.setColor(color);
+    g.draw(curve);
+
+    // لاگ برای دیباگ
+    System.out.println("📍 WirePreview from: " + from.x + "," + from.y + " → to: " + to.x + "," + to.y);
+}
+
 
     public boolean isValid() {
         return valid;
@@ -58,24 +91,10 @@ public class WirePreview {
     public Port getFromPort() {
         return fromPort;
     }
+    public Point2D getCurrentMousePoint() {
+        return currentMousePosition.toPoint2D();
+    }
+    public Point2D getStartScreenPoint() {
+        return fromScreenPosition;
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -30,8 +30,8 @@ public class StageManager {
         tracker.reset();
         currentStageNumber = stageNumber;
 
-        // اینجا مرحله رو با توجه به stageNumber لود می‌کنی
-        // مثلاً: StageConfig.loadStage(stageNumber, systemNodes, wires);
+        // اینجا مرحله رو با توجه به stageNumber باید لود کنم
+
     }
 
     public void addSystemNode(SystemNode node) {

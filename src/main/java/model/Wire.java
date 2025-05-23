@@ -52,7 +52,7 @@ public class Wire {
         }
         packetsOnWire.removeIf(Packet::isLost);
 
-        // پردازش تحویل پکت‌ها
+
         List<Packet> delivered = new LinkedList<>();
         for (Packet packet : packetsOnWire) {
             packet.updateMovement(deltaTime);

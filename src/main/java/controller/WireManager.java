@@ -31,10 +31,7 @@ public class WireManager {
         double wireLength = fromPort.getPosition().distanceTo(toPort.getPosition());
         if (totalWireLengthUsed + wireLength > Constants.TOTAL_AVAILABLE_WIRE_LENGTH)
             return false;
-        System.out.println("❌ طول سیم مجاز تمام شده!");
-
-
-
+        System.out.println(" طول سیم مجاز تمام شده!");
 
 
         Wire newWire = new Wire(fromPort, toPort);
@@ -44,7 +41,12 @@ public class WireManager {
         totalWireLengthUsed += wireLength;
         return true;
     }
+    public Wire connectAndReturn(Port fromPort, Port toPort) {
+        boolean success = tryConnectPorts(fromPort, toPort);
+        if (!success) return null;
 
+        return wires.getLast(); // آخرین سیم موفق ثبت‌شده
+    }
     public void removeWire(Wire wire) {
         wires.remove(wire);
         totalWireLengthUsed -= wire.getLength();

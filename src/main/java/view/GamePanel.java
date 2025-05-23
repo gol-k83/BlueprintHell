@@ -31,7 +31,7 @@ public class GamePanel extends JPanel {
         gameStageView.setWireBuilder(wireBuilder);
         mouseController = new MouseInteractionController(wireBuilder, this);
 
-        // اتصال کنترلر به رویدادهای ماوس
+
        gameStageView.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -88,4 +88,3 @@ public class GamePanel extends JPanel {
 
 
 }
-// wireBuilder = new WireBuilder(this.getWireManager()); // اگر از WireBuilder استفاده می‌کنی

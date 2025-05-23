@@ -16,17 +16,17 @@ public class SystemNode {
     }
 
 
-    private final String id;                      // شناسه یکتا برای سیستم
-    private final List<Port> inputPorts;           // لیست پورت‌های ورودی
-    private final List<Port> outputPorts;          // لیست پورت‌های خروجی
-    private final Queue<Packet> buffer;            // صف پکت‌های منتظر
-    private final boolean isReference;             // آیا نود مرجع است؟
-    private Vector2D position;                     // موقعیت گرافیکی
-    private NodeStatus status;                     // وضعیت اتصال
-    private int successfulPackets;                 // تعداد پکت‌های سالم برگشتی
+    private final String id;
+    private final List<Port> inputPorts;
+    private final List<Port> outputPorts;
+    private final Queue<Packet> buffer;
+    private final boolean isReference;
+    private Vector2D position;
+    private NodeStatus status;
+    private int successfulPackets;
     private int lostPackets;
     private final String displayName;
-    // تعداد پکت‌های از دست رفته
+
 
 
     public SystemNode(String id, Vector2D position, boolean isReference,String displayName) {
@@ -105,9 +105,9 @@ public class SystemNode {
     }
 
     private void sendThroughPort(Port port, Packet packet) {
-        port.setOccupied(true); // پورت مشغول می‌شود
+        port.setOccupied(true);
         if (port.getConnectedWire() != null) {
-            port.getConnectedWire().addPacket(packet); // ارسال به سیم متصل به پورت
+            port.getConnectedWire().addPacket(packet);
         }
     }
 

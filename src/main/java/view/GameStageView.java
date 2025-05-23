@@ -45,12 +45,12 @@ public class GameStageView extends JPanel {
         tipBarView.setBounds(250, 0, 950, 70);
         add(tipBarView);
 
-        // برچسب مرحله (مثلاً DAY1)
+
         stageLabel = new StageLabel("DAY 1");
         stageLabel.setBounds(0, 0, 300, 50);
         add(stageLabel);
 
-        // HUD پایین صفحه (پنهان/نمایش‌پذیر)
+
         hudPanel = new HUDPanel();
         hudPanel.setBounds(250, 750, 900, 50);
 
@@ -65,7 +65,7 @@ public class GameStageView extends JPanel {
         }
     }
 
-    // دیگر نیازی به paintComponent برای رسم دستی نودها نیست!
+
 
     public StageLabel getStageLabel() { return stageLabel; }
     public NodePalettePanel getNodePalettePanel() { return nodePalettePanel; }
@@ -80,7 +80,7 @@ public class GameStageView extends JPanel {
             for (PortView portView : nodeView.getAllPorts()) {
                 Rectangle bounds = portView.getBounds();
 
-                // تبدیل به مختصات جهانی (global)
+
                 Rectangle globalBounds = new Rectangle(
                         bounds.x + nodeLocation.x,
                         bounds.y + nodeLocation.y,
@@ -118,7 +118,8 @@ public class GameStageView extends JPanel {
 
     public void addWire(Wire wire) {
         wireViews.add(new WireView(wire));
-        // Optionally: repaint();  // برای آپدیت سیم‌ها
+
+  repaint();
     }
 
     public WireManager getWireManager() { return wireManager; }
@@ -129,19 +130,20 @@ public class GameStageView extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        // رسم بک‌گراند (مثلاً grid_background.png)
+
         Image bgImage = ImageAssets.get("grid_background.png");
         if (bgImage != null) {
-            g2d.drawImage(bgImage, 250, 50, 900, 700, this); // ناحیه زمین بازی
+            g2d.drawImage(bgImage, 250, 50, 900, 700, this);
         }
 
-        // اگر سیم‌ها رو دستی می‌کشی، اینجا رسمشون کن:
         for (WireView wireView : wireViews) {
-            wireView.draw(g2d);
+            wireView.draw(g2d,this);
         }
         if (wireBuilder != null) {
-            wireBuilder.drawPreview(g2d);
+
+            wireBuilder.drawPreview(g2d,this);
         }
+
     }
     public void addNodeToStage(SystemNodeView view) {
         if (view != null){
@@ -153,16 +155,35 @@ public class GameStageView extends JPanel {
                 Constants.NODE_WIDTH, Constants.NODE_HEIGHT );
             view.setVisible(true);
             this.add(view);
-            nodeViews.add(view); // اضافه به لیست داخلی
+            nodeViews.add(view);
             revalidate();
             repaint();}
         else {
-            System.err.println("⚠️ View is null!");
+            System.err.println("View is null!");
         }
     }
     public void setWireBuilder(WireBuilder builder) {
         this.wireBuilder = builder;
     }
+    public PortView findPortView(Port port) {
+        for (SystemNodeView nodeView : nodeViews) {
+            for (PortView portView : nodeView.getAllPorts()) {
+                if (portView.getPort() == port) {
+                    return portView;
+                }
+            }
+        }
+        return null;
+    }
+    public SystemNodeView findViewFor(SystemNode node) {
+        for (SystemNodeView view : nodeViews) {
+            if (view.getNode() == node) {
+                return view;
+            }
+        }
+        return null;
+    }
+
 
 }
 

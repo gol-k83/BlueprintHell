@@ -31,10 +31,5 @@ public static Image get(String name) {
     public static void preloadAll() {
         get("grid_background.png");
        // get("tip_bar.png");
-       // get("system_node.png");
-      //  get("start_node.png");
-     //   get("end_node.png");
-     //   get("port_square.png");
-      //  get("port_triangle.png");
     }
 }

@@ -24,7 +24,7 @@ public class GameTipBarView extends JPanel {
 
 
         tipImageLabel = new JLabel(tipImage);
-        tipImageLabel.setBounds(100, 10, 800, 40); // جایگاه تصویر راهنما
+        tipImageLabel.setBounds(100, 10, 800, 40);
         add(tipImageLabel);
 
         infoButton = new JButton("i");
@@ -37,10 +37,8 @@ public class GameTipBarView extends JPanel {
         infoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // دریافت عکس از کلاس ImageAssets
-                Image tipImage = ImageAssets.get("information.png");
 
-                // اگر تصویر null نبود، آن را نمایش بده
+                Image tipImage = ImageAssets.get("information.png");
                 if (tipImage != null) {
                     ImageIcon tipIcon = new ImageIcon(tipImage);
                     JLabel imageLabel = new JLabel(tipIcon);
@@ -52,7 +50,7 @@ public class GameTipBarView extends JPanel {
                             JOptionPane.PLAIN_MESSAGE
                     );
                 } else {
-                    // اگر بارگذاری تصویر شکست خورد
+
                     JOptionPane.showMessageDialog(
                             GameTipBarView.this,
                             "تصویر راهنما یافت نشد!",

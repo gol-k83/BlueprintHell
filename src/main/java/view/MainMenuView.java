@@ -76,7 +76,7 @@ buttonPanel.setBorder(BorderFactory.createEmptyBorder(500,400,150,400));
         
 
 
-// حاشیه درخشان
+
            button.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
            return button;
        }

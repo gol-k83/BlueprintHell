@@ -7,7 +7,7 @@ import util.Vector2D;
 import view.*;
 
 import javax.swing.*;
-import javax.swing.text.View;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
@@ -32,24 +32,24 @@ public class MouseInteractionController {
     public void handleMousePressed(MouseEvent e) {
         Point click = e.getPoint();
 
-        // 1️⃣ اگر روی یک پورت کلیک شد → wire
+        // اگر روی یک پورت کلیک شد → wire
         Port clickedPort = gamePanel.findPortAt(click);
-
-        if (clickedPort != null) {
-            System.out.println("🔘 روی پورت کلیک شد: " + clickedPort.getId());
-            wireBuilder.onPortClick(clickedPort);
-            gamePanel.repaint();
-            return;
-        }
-        PortView clickedPortView = gamePanel.getGameStageView().findPortViewAt(click);
-        if (clickedPortView != null) {
-            System.out.println("✔️ روی پورت کلیک شد: " + clickedPortView.getPort().getId());
-            wireBuilder.onPortClick(clickedPortView.getPort()); // اینجا از PortView استفاده کن
-            gamePanel.repaint();
+      //  Port clickedPort = gamePanel.findPortAt(e.getPoint());
+        if (clickedPort != null && clickedPort.getType() == Port.PortType.OUTPUT) {
+            wireBuilder.startDraggingFrom(clickedPort);
+            dragOffset = click; // نگه داریم برای شروع سیم
+         //   e.consume();
             return;
         }
 
-        // 2️⃣ اگر کلیک راست بود → حذف وایر
+       if (clickedPort != null) {
+           System.out.println(" روی پورت کلیک شد: " + clickedPort.getId());
+          // wireBuilder.onPortClick(clickedPort);
+           gamePanel.repaint();
+          return;
+       }
+
+        //  اگر کلیک راست بود → حذف وایر
         if (e.getButton() == MouseEvent.BUTTON3) {
             Wire targetWire = gamePanel.findWireNear(click);
             if (targetWire != null) {
@@ -59,7 +59,7 @@ public class MouseInteractionController {
             }
         }
 
-        // 3️⃣ چک کنیم آیا روی NodePalettePanel کلیک شده؟
+        //
         GameStageView stage = gamePanel.getGameStageView();
         NodePalettePanel palette = stage.getNodePalettePanel();
 
@@ -76,9 +76,9 @@ public class MouseInteractionController {
                     palette.removeNode(view);
 
                     // اضافه کردن به زمین بازی
-                    stage.addNodeToStage(view); // 👈 با متد استاندارد
+                    stage.addNodeToStage(view); //
                     view.setBounds(nextDropX, nextDropY, Constants.NODE_WIDTH, Constants.NODE_HEIGHT);
-                    view.getNode().setPosition(new Vector2D(nextDropX, nextDropY)); // ⬅️ هماهنگی مدل
+                    view.getNode().setPosition(new Vector2D(nextDropX, nextDropY)); //
 
                     // برای درگ شدن بلافاصله
                     draggedNode = view;
@@ -93,7 +93,7 @@ public class MouseInteractionController {
             }
         }
 
-        // 4️⃣ اگر در نودهای روی زمین کلیک شده بود
+
         cancelWireDrawing();
 
         for (SystemNodeView nodeView : gamePanel.getSystemNodeViews()) {
@@ -116,8 +116,8 @@ public class MouseInteractionController {
         if (draggedNode != null && dragOffset != null) {
             int newX = e.getX() - dragOffset.x;
             int newY = e.getY() - dragOffset.y;
-            draggedNode.setLocation(newX, newY);                       // ← جابه‌جایی نمایشی
-            draggedNode.getNode().setPosition(new Vector2D(newX, newY)); // ← آپدیت مدل
+            draggedNode.setLocation(newX, newY);
+            draggedNode.getNode().setPosition(new Vector2D(newX, newY));
             draggedNode.moveTo(newX, newY);
             gamePanel.repaint();
         }
@@ -135,9 +135,9 @@ public class MouseInteractionController {
         if (wireBuilder.isActive()) {//////+++=
             Port target = gamePanel.findPortAt(e.getPoint());
             if (target != null) {
-                wireBuilder.onPortClick(target); // تلاش برای اتصال نهایی
+                wireBuilder.finishDraggingTo(target);
             } else {
-                wireBuilder.cancel(); // لغو سیم‌کشی
+                wireBuilder.cancel(); // لغو بشه
             }
             gamePanel.repaint();
         }

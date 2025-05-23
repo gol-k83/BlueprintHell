@@ -2,7 +2,7 @@ package util;
 
 public class Constants {
   // --- سیم‌کشی ---
-  public static final double TOTAL_AVAILABLE_WIRE_LENGTH = 900.0; // تقریباً 3 اتصال بلند
+  public static final double TOTAL_AVAILABLE_WIRE_LENGTH = 10000.0;
 
   // --- برخورد ---
   public static final double IMPACT_RADIUS = 100.0; // با توجه به فاصله‌ی پکت‌ها

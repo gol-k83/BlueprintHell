@@ -19,7 +19,6 @@ public class PacketView {
         Vector2D pos = packet.getPosition();
         /////////////
         int size = Constants.PACKET_BASE_SIZE * packet.getOriginalSize();
-        // Size in pixels, can scale with packet.getOriginalSize()
 
         // Transparency based on noise level
         float alpha = 1.0f - (float) packet.getCurrentNoise() / packet.getOriginalSize();
@@ -46,7 +45,7 @@ public class PacketView {
             }
         }
 
-        // Draw gray border
+
         g.setColor(Color.LIGHT_GRAY);
         Stroke originalStroke = g.getStroke();
         g.setStroke(new BasicStroke(1));

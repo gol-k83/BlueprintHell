@@ -26,9 +26,10 @@ public class SystemNodeView extends JComponent {
         this.selected = false;
 
         setOpaque(false); // بک‌گراند کامپوننت شفاف بشه تا چیزا دیده بشن
-        setSize(Constants.NODE_WIDTH, Constants.NODE_HEIGHT); // سایز فیزیکی نود
+        setSize(Constants.NODE_WIDTH, Constants.NODE_HEIGHT);
         setLayout(null);
     }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -59,24 +60,13 @@ public class SystemNodeView extends JComponent {
             g.drawRect(x, y, width, height);
         }
 
-//        // Draw title
-//        g.setColor(Color.LIGHT_GRAY);
-//        g.fillRoundRect(x + 5, y + 5, 60, 15, 10, 10);
-//        g.setColor(Color.WHITE);
-//        g.setFont(new Font("Arial", Font.PLAIN, 10));
-//        g.drawString(node.getDisplayName(), x + 10, y + 17);
-
-        // Status indicator
         g.setColor(node.isFullyConnected() ? Color.CYAN : Color.GRAY);
-       // g.fillOval(x + width / 2 - 5, y + 25, 10, 10);
-
-
 
         Polygon diamond = new Polygon();
         int cx = x + width / 2;
         int cy = y + 25;
         diamond.addPoint(cx, cy - 10);
-        diamond.addPoint(cx -30, cy);
+        diamond.addPoint(cx - 30, cy);
         diamond.addPoint(cx, cy + 10);
         diamond.addPoint(cx + 30, cy);
         g.fillPolygon(diamond);
@@ -86,7 +76,7 @@ public class SystemNodeView extends JComponent {
         int spacing = height / (inputPortViews.size() + 1);
         for (int i = 0; i < inputPortViews.size(); i++) {
             int portY = y + (i + 1) * spacing;
-            inputPortViews.get(i).draw(g, x , portY);
+            inputPortViews.get(i).draw(g, x, portY);
         }
 
         // Draw output ports (right side)

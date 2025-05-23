@@ -35,8 +35,6 @@ public class NodePalettePanel extends JPanel {
             view.draw(g2d);
             y += 120; // فاصله بین نودها در ستون
         }
-
-        // عنوان بخش
         g2d.setColor(Color.WHITE);
         g2d.setFont(new Font("Arial", Font.BOLD, 16));
         g2d.drawString("Given Nodes", 60, 20);

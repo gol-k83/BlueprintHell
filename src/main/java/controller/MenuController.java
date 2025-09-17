@@ -20,14 +20,15 @@ public class MenuController {
    private void attachEventListeners(){
 
        view.startButton.addActionListener(e -> {
+
            JFrame gameFrame = new JFrame("Game Stage");
            gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
            gameFrame.setContentPane(new GamePanel());
            gameFrame.pack();
            gameFrame.setLocationRelativeTo(null);
            gameFrame.setVisible(true);
-
-           view.dispose(); // بستن منوی اصلی
+           controller.StageManager.getInstance().loadStage(1);
+           view.dispose();
        });
 
              view.levelsButton.addActionListener(new ActionListener() {

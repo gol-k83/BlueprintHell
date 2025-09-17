@@ -1,14 +1,21 @@
+
 package view;
 
 import model.SystemNode;
 import util.Vector2D;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class NodePalettePanel extends JPanel {
+
     private final List<SystemNodeView> availableNodes;
+
+
+    private final List<SystemNodeView> stage2Nodes = new ArrayList<>();
+    private boolean stage2Unlocked = false;
 
     public NodePalettePanel() {
         this.availableNodes = new ArrayList<>();
@@ -16,9 +23,26 @@ public class NodePalettePanel extends JPanel {
         setLayout(null);
     }
 
+
     public void addNode(SystemNode node) {
         SystemNodeView view = new SystemNodeView(node);
         availableNodes.add(view);
+        repaint();
+    }
+
+
+    public void addStage2Nodes(List<SystemNode> nodes) {
+        if (nodes == null) return;
+        for (SystemNode n : nodes) {
+            stage2Nodes.add(new SystemNodeView(n));
+        }
+        repaint();
+    }
+
+
+    public void unlockStage2() {
+        this.stage2Unlocked = true;
+        revalidate();
         repaint();
     }
 
@@ -30,21 +54,48 @@ public class NodePalettePanel extends JPanel {
 
         int padding = 35;
         int y = padding;
-        for (SystemNodeView view : availableNodes) {
-            view.getNode().setPosition(new Vector2D(50, y));
-            view.draw(g2d);
-            y += 120; // فاصله بین نودها در ستون
-        }
+
+
         g2d.setColor(Color.WHITE);
         g2d.setFont(new Font("Arial", Font.BOLD, 16));
         g2d.drawString("Given Nodes", 60, 20);
-    }
-    public List<SystemNodeView> getAvailableNodes() {
-        return availableNodes;
-    }
-    public void removeNode(SystemNodeView view) {
-        availableNodes.remove(view);
-        repaint();
+
+        for (SystemNodeView view : availableNodes) {
+            view.getNode().setPosition(new Vector2D(50, y));
+            view.draw(g2d);
+            y += 120;
+        }
+
+
+        if (stage2Unlocked && !stage2Nodes.isEmpty()) {
+            y += 10; // کمی فاصله از بخش بالا
+            g2d.drawString("Stage 2 Nodes", 60, y);
+            y += 15;
+
+            for (SystemNodeView view : stage2Nodes) {
+                view.getNode().setPosition(new Vector2D(50, y));
+                view.draw(g2d);
+                y += 120;
+            }
+        }
     }
 
+
+    public List<SystemNodeView> getAvailableNodes() {
+        if (!stage2Unlocked) return availableNodes;
+
+
+        List<SystemNodeView> all = new ArrayList<>(availableNodes);
+        all.addAll(stage2Nodes);
+        return all;
+    }
+
+
+    public void removeNode(SystemNodeView view) {
+        if (view == null) return;
+        if (!availableNodes.remove(view)) {
+            stage2Nodes.remove(view);
+        }
+        repaint();
+    }
 }

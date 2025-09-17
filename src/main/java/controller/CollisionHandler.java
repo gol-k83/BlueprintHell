@@ -6,21 +6,23 @@ import java.util.List;
 
 public class CollisionHandler {
 
-    public void handleCollision(Packet packet1, Packet packet2, List<Packet> allPackets) {
-        packet1.applyNoise(1);
-        packet2.applyNoise(1);
+    public void handleCollision(Packet p1, Packet p2, List<Packet> allPackets) {
+        p1.applyNoise(1);
+        p2.applyNoise(1);
 
-        Vector2D collisionVector = packet1.getPosition().subtract(packet2.getPosition()).normalize();
+        Vector2D collisionVector = p1.getPosition().subtract(p2.getPosition()).normalize();
+        if (collisionVector.length() == 0) collisionVector = new Vector2D(1, 0);
+        // جلوگیری از NaN
         double offset = Constants.COLISION1_OFFSET;
 
 
-        packet1.setPosition(packet1.getPosition().add(collisionVector.multiply(offset)));
-        packet1.setPosition(packet2.getPosition().subtract(collisionVector.multiply(offset)));
+        p1.setPosition(p1.getPosition().add(collisionVector.multiply(offset)));
+        p2.setPosition(p2.getPosition().subtract(collisionVector.multiply(offset)));
 
 
         for (Packet other : allPackets) {
-            if (other == packet1 || other == packet2 || other.isLost()) continue;
-            double distance = other.getPosition().distanceTo(midpoint(packet1.getPosition(), packet2.getPosition()));
+            if (other == p1 || other == p2 || other.isLost()) continue;
+            double distance = other.getPosition().distanceTo(midpoint(p1.getPosition(), p2.getPosition()));
 
             if (distance <= Constants.IMPACT_RADIUS) {
                 double impactFactor = (Constants.IMPACT_RADIUS - distance) / Constants.IMPACT_RADIUS;
@@ -33,10 +35,10 @@ public class CollisionHandler {
 
         }
     }
-public static Vector2D midpoint(Vector2D pos1,Vector2D pos2){
-            return new Vector2D((pos1.getX()+pos2.getX())/2,(pos1.getX()+pos2.getY())/2);
+    public static Vector2D midpoint(Vector2D a, Vector2D b){
+        return new Vector2D((a.getX()+b.getX())/2.0, (a.getY()+b.getY())/2.0);
+    }
 
-        }
 
 
 }

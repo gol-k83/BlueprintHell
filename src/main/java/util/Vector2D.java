@@ -37,7 +37,7 @@ public class Vector2D {
         return  new Vector2D(this.x*scaler,this.y*scaler);
 
     }
-    // محاسبه فاصله با بردار دیگر
+
     public double distanceTo(Vector2D other) {
         double dx = this.x - other.x;
         double dy = this.y - other.y;

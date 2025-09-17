@@ -46,7 +46,7 @@ public class MainMenuView extends JFrame {
 
 
 
-        //ساختن دکمه ها
+
 JPanel buttonPanel =new JPanel(new GridLayout(4,1,20,20));
 buttonPanel.setBackground(Color.BLACK);
 buttonPanel.setBorder(BorderFactory.createEmptyBorder(500,400,150,400));

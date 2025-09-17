@@ -39,20 +39,7 @@ public class WirePreview {
         this.color = isValid ? Color.GREEN : Color.RED;
     }
 
-//    public void draw(Graphics2D g) {
-//        Point2D from = fromPort.getPosition().toPoint2D();
-//        Point2D to = currentMousePosition.toPoint2D();
-//
-//        Point2D control = new Point2D.Double(
-//                (from.getX() + to.getX()) / 2, (from.getY() + to.getY()) / 2);
-//        QuadCurve2D curve = new QuadCurve2D.Double();
-//        curve.setCurve(from, control, to);
-//        g.setColor(color);
-//        g.draw(curve);
-//        System.out.println(" رسم از: " + from.getY());
-//
-//
-//    }
+
 public void draw(Graphics2D g, GameStageView stage) {
 
     SystemNodeView fromNodeView = stage.findViewFor(fromPort.getParentNode());
@@ -79,8 +66,7 @@ public void draw(Graphics2D g, GameStageView stage) {
     g.setColor(color);
     g.draw(curve);
 
-    // لاگ برای دیباگ
-    System.out.println("📍 WirePreview from: " + from.x + "," + from.y + " → to: " + to.x + "," + to.y);
+    System.out.println(" WirePreview from: " + from.x + "," + from.y + " → to: " + to.x + "," + to.y);
 }
 
 
